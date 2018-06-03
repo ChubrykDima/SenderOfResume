@@ -14,7 +14,7 @@ namespace SenderOfResume.Parsing
     {
         readonly string companiesUrl = "https://companies.dev.by";
 
-        private string[] adress;
+        private string[] address;
 
         public string GetHtmlPage()
         {
@@ -82,9 +82,9 @@ namespace SenderOfResume.Parsing
 
         public async Task Worker()
         {
-            adress = await ParseLinks();
+            address = await ParseLinks();
 
-            foreach (var item in adress)
+            foreach (var item in address)
             {
                 var url = companiesUrl + item;
                 var html = await GetHtmlPageEmail(url);
