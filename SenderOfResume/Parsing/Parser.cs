@@ -7,7 +7,6 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using SenderOfResume.Email;
-using System.Threading;
 
 namespace SenderOfResume.Parsing
 {
@@ -33,7 +32,6 @@ namespace SenderOfResume.Parsing
             }                
         }
 
-
         public async Task<string[]> ParseLinks()
         {
             var list = new List<string>();
@@ -54,7 +52,7 @@ namespace SenderOfResume.Parsing
             return list.ToArray();
         }
 
-        public static async void ParseEmail(string html)
+        public static async Task ParseEmail(string html)
         {
             try {
                 Letter letter = new Letter();
@@ -69,7 +67,7 @@ namespace SenderOfResume.Parsing
                         var items = item.Substring(7);
                         if (!String.IsNullOrEmpty(items) && items.Contains("@"))
                         {
-                            Console.WriteLine(items + " - резюме отправлено");                           
+                            Console.WriteLine(items + " - Resume sent");                           
                             letter.SendEmail(items);
                         }
                     }
@@ -77,13 +75,12 @@ namespace SenderOfResume.Parsing
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Ошибка:" + ex.Message);
+                Console.WriteLine("Error:" + ex.Message);
                 throw;
             }
         }
 
-
-        public async void Worker()
+        public async Task Worker()
         {
             adress = await ParseLinks();
 
@@ -92,11 +89,10 @@ namespace SenderOfResume.Parsing
                 var url = companiesUrl + item;
                 var html = await GetHtmlPageEmail(url);
 
-                ParseEmail(html);
-            }
-            Thread.Sleep(500);
+                await ParseEmail(html);
+            }            
             Console.ForegroundColor = ConsoleColor.DarkRed;
-            Console.WriteLine("Отправка резюме завершена");
+            Console.WriteLine("Sending resume completed");
         }
     }
 }

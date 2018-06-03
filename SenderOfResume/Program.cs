@@ -8,12 +8,11 @@ using SenderOfResume.Parsing;
 namespace SenderOfResume
 {
     class Program
-    {
-
+    {        
         static void Main(string[] args)
         {
             Parser parser = new Parser();
-            parser.Worker();
+            parser.Worker().Wait();
             Console.ReadKey();
         }
     }
